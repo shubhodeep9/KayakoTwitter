@@ -253,12 +253,12 @@ class KayakoTwitter
 *on basis of atleast 1 retweet
 */
 header('Content-Type: application/json');
-$CONSUMER_SECRET = 'V2VhVJWLSxZbdhDLLyQN1eRy7PMW0ooqgFFynjTkYa8a4B64GF';
-$CONSUMER_KEY = 'klbbx9xjYm6tJxzUhutcmHSF2';
+$CONSUMER_SECRET = $_ENV["CONSUMER_SECRET"];
+$CONSUMER_KEY = $_ENV["CONSUMER_KEY"];
 
 
-$access_token = "482107777-irsRqZBYtDXeQ4umRkL6lQsF07aMe1YDT3HrUdug";
-$access_token_secret = "5LGWjY0M8e3g7Z7SH9ceXHUgkPhMomNELhFlev2MXM6Oc";
+$access_token = $_ENV["ACCESS_TOKEN"];
+$access_token_secret = $_ENV["ACCESS_TOKEN_SECRET"];
 $settings = array(
     'oauth_access_token' => $access_token,
     'oauth_access_token_secret' => $access_token_secret,
