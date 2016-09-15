@@ -258,7 +258,7 @@ $CONSUMER_KEY = $_ENV["CONSUMER_KEY"];
 
 
 $access_token = $_ENV["ACCESS_TOKEN"];
-$access_token_secret = $_ENV["ACCESS_TOKEN_SECRET"];
+$access_token_secret = $_ENV["ACCESS_SECRET"];
 $settings = array(
     'oauth_access_token' => $access_token,
     'oauth_access_token_secret' => $access_token_secret,
