@@ -1,40 +1,43 @@
 # Import the necessary package to process data in JSON format
-try:
-    import json
-except ImportError:
-    import simplejson as json
-
+import tornado.ioloop
+import tornado.web
+from tornado.escape import json_encode
 # Import the necessary methods from "twitter" library
 from twitter import Twitter, OAuth, TwitterHTTPError, TwitterStream
 
-# Variables that contains the user credentials to access Twitter API 
-ACCESS_TOKEN = 'YOUR ACCESS TOKEN"'
-ACCESS_SECRET = 'YOUR ACCESS TOKEN SECRET'
-CONSUMER_KEY = 'klbbx9xjYm6tJxzUhutcmHSF2'
-CONSUMER_SECRET = 'V2VhVJWLSxZbdhDLLyQN1eRy7PMW0ooqgFFynjTkYa8a4B64GF'
+"""
+MainHandler consists of the code that hits on the twitter api\
+fetches the tweets, consisting of #custserv
+then the tweets are filtered on the basis of retweet_count, that\
+to be greater than or equal to 1.
+"""
 
-oauth = OAuth("482107777-irsRqZBYtDXeQ4umRkL6lQsF07aMe1YDT3HrUdug", "5LGWjY0M8e3g7Z7SH9ceXHUgkPhMomNELhFlev2MXM6Oc", CONSUMER_KEY, CONSUMER_SECRET)
+class MainHandler(tornado.web.RequestHandler):
+    def get(self):
+        # Variables that contains the user credentials to access Twitter API 
+        ACCESS_TOKEN = "482107777-irsRqZBYtDXeQ4umRkL6lQsF07aMe1YDT3HrUdug"
+        ACCESS_SECRET = "5LGWjY0M8e3g7Z7SH9ceXHUgkPhMomNELhFlev2MXM6Oc"
+        CONSUMER_KEY = 'klbbx9xjYm6tJxzUhutcmHSF2'
+        CONSUMER_SECRET = 'V2VhVJWLSxZbdhDLLyQN1eRy7PMW0ooqgFFynjTkYa8a4B64GF'
+        oauth = OAuth(ACCESS_TOKEN, ACCESS_SECRET, CONSUMER_KEY, CONSUMER_SECRET)
+        twitter = Twitter(auth=oauth)
+        tweets = twitter.search.tweets(q="#custserv")
+        output = {
+            'Author':'Shubhodeep Mukherjee',
+            'Attribute':'Output with tweets having #custserv and minimum 1 retweet_count',
+            'Response':[]
+        }
+        for tweet in tweets['statuses']:
+            if(tweet['retweet_count']>0):
+                output['Response'].append(tweet)
+        self.write(output)
 
-# Initiate the connection to Twitter Streaming API
-twitter_stream = TwitterStream(auth=oauth)
+def make_app():
+    return tornado.web.Application([
+        (r"/", MainHandler),
+    ])
 
-# Get a sample of the public data following through Twitter
-iterator = twitter_stream.statuses.sample()
-
-# Print each tweet in the stream to the screen 
-# Here we set it to stop after getting 1000 tweets. 
-# You don't have to set it to stop, but can continue running 
-# the Twitter API to collect data for days or even longer. 
-tweet_count = 1000
-for tweet in iterator:
-    tweet_count -= 1
-    # Twitter Python Tool wraps the data returned by Twitter 
-    # as a TwitterDictResponse object.
-    # We convert it back to the JSON format to print/score
-    print json.dumps(tweet)  
-    
-    # The command below will do pretty printing for JSON data, try it out
-    # print json.dumps(tweet, indent=4)
-       
-    if tweet_count <= 0:
-        break 
+if __name__ == "__main__":
+    app = make_app()
+    app.listen(8888)
+    tornado.ioloop.IOLoop.current().start()
