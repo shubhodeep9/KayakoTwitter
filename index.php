@@ -246,6 +246,13 @@ class KayakoTwitter
     }
 }
 
+/**
+*The main program block
+*This block will use the above class
+*and then filter out the response
+*on basis of atleast 1 retweet
+*/
+header('Content-Type: application/json');
 $CONSUMER_SECRET = 'V2VhVJWLSxZbdhDLLyQN1eRy7PMW0ooqgFFynjTkYa8a4B64GF';
 $CONSUMER_KEY = 'klbbx9xjYm6tJxzUhutcmHSF2';
 
@@ -260,9 +267,21 @@ $settings = array(
 );
 
 $url = 'https://api.twitter.com/1.1/search/tweets.json';
-$getfield = '?q=twitterapi&';
+$getfield = '?q=%23custserv';
 $requestMethod = 'GET';
 $twitter = new KayakoTwitter($settings);
-echo $twitter->setGetfield($getfield)
+$apiresponse = $twitter->setGetfield($getfield)
              ->buildOauth($url, $requestMethod)
              ->performRequest();
+$apiresponse = json_decode($apiresponse,true);
+$output = array('Author'=>'Shubhodeep Mukherjee','Attribute'=>'Output with tweets having #custserv and minimum 1 retweet_count','Response'=>array());
+foreach ($apiresponse['statuses'] as $key => $value) {
+    if($value["retweet_count"]>0){
+        array_push($output['Response'],$value);
+    }
+}
+
+echo json_encode($output);
+/**
+*End of block
+*/
