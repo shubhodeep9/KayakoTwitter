@@ -9,8 +9,9 @@ a) Have been re-Tweeted at least once and<br /> b) Contain the hashtag #custserv
 </ul>
 
 ## Public Ports
-http://gdgbasics.cloudapp.net/KayakoTwitter/index.php [PHP Script]<br />
-http://gdgbasics.cloudapp.net:8888/ [Python Script]<br />
+For better readability, open these using Postman<br />
+[GET] http://gdgbasics.cloudapp.net/KayakoTwitter/index.php [PHP Script]<br />
+[GET] http://gdgbasics.cloudapp.net:8888/ [Python Script]<br />
 
 ## Installation
 <ul>
