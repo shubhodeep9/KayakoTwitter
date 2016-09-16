@@ -14,6 +14,7 @@ For better readability, open these using Postman<br />
 [GET] http://gdgbasics.cloudapp.net:8888/ [Python Script]<br />
 
 ## Installation
+<strong>Make sure to put your Twitter App Tokens as environment variables.</strong>
 <ul>
 <li>PHP - Put the script in your apache htdocs folder, and make sure php-curl is installed.</li>
 <li>Python - Install dependencies using</li>
